@@ -27,6 +27,7 @@ var ROSE = (function() {
         this.obstacles = new Obstacles(image_loader);
         this.cars = new Cars(image_loader);
         this.finish_line = new FinishLine(image_loader);
+        this.winner_msg = new WinnerMsg();
         this.sound = new Sound("res/soundtrack/Nyan_Cat.ogg");
     }
 
@@ -47,6 +48,7 @@ var ROSE = (function() {
         this.obstacles.update(state);
         this.cars.update(state);
         this.finish_line.update(state);
+        this.winner_msg.update(state)
 
         // Draw
         this.dashboard.draw(this.context);
@@ -54,6 +56,7 @@ var ROSE = (function() {
         this.obstacles.draw(this.context);
         this.cars.draw(this.context);
         this.finish_line.draw(this.context);
+        this.winner_msg.draw(this.context)
     }
 
     var Config = {
@@ -363,6 +366,23 @@ var ROSE = (function() {
         var row = Config.finish_line_duration - this.timeleft;
         var y = Config.row_height * row;
         ctx.drawImage(this.texture, 0, y);
+    }
+
+    function WinnerMsg() {
+        this.timeleft = null;
+    }
+
+    WinnerMsg.prototype.update = function(state) {
+        this.timeleft = state.timeleft;
+        this.players = state.players;
+    }
+
+    WinnerMsg.prototype.draw = function() {
+        if(this.players.length == 2 && this.timeleft == 0) {
+            console.log(this.timeleft)
+            // In this stage we should change the winner name-color (flip green/white)
+            // this.maxResult = Math.max.apply(Math, this.players.map(function(o) { return o.score; }))
+        }
     }
 
     function Track(loader) {
